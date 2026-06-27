@@ -1,6 +1,23 @@
 # Mini Tasks API
 
-Небольшой REST API для списка задач на FastAPI.
+Небольшой REST API на FastAPI для управления задачами. Проект показывает базовую структуру FastAPI-сервиса: роутеры, схемы, сервисный слой, валидацию и тесты.
+
+## Возможности
+
+- Создание задачи.
+- Получение списка задач.
+- Получение задачи по `id`.
+- Валидация входных данных через Pydantic.
+- Статусы задач: `new`, `in_progress`, `done`.
+- Тесты для основных сценариев API.
+
+## Стек
+
+- Python 3.10+
+- FastAPI
+- Pydantic
+- Uvicorn
+- Pytest
 
 ## Запуск
 
@@ -11,9 +28,17 @@ pip install -r requirements.txt
 uvicorn app.main:app --reload
 ```
 
-API будет доступен на `http://127.0.0.1:8000`.
+API будет доступен по адресу:
 
-Проект рассчитан на Python 3.10+.
+```text
+http://127.0.0.1:8000
+```
+
+Swagger-документация:
+
+```text
+http://127.0.0.1:8000/docs
+```
 
 ## Тесты
 
@@ -21,11 +46,9 @@ API будет доступен на `http://127.0.0.1:8000`.
 pytest
 ```
 
-## Эндпоинты
+## Примеры запросов
 
-### `POST /tasks`
-
-Создает новую задачу.
+Создать задачу:
 
 ```bash
 curl -X POST http://127.0.0.1:8000/tasks \
@@ -33,39 +56,24 @@ curl -X POST http://127.0.0.1:8000/tasks \
   -d '{"title":"Купить молоко","description":"2 литра","status":"new"}'
 ```
 
-Пример ответа:
-
-```json
-{
-  "id": 1,
-  "title": "Купить молоко",
-  "description": "2 литра",
-  "status": "new"
-}
-```
-
-### `GET /tasks`
-
-Возвращает все задачи.
+Получить список задач:
 
 ```bash
 curl http://127.0.0.1:8000/tasks
 ```
 
-### `GET /tasks/{task_id}`
-
-Возвращает одну задачу по id.
+Получить задачу по `id`:
 
 ```bash
 curl http://127.0.0.1:8000/tasks/1
 ```
 
-Если задачи нет, API вернет `404 Not Found`.
+## Структура
 
-## Поля задачи
-
-`title` - обязательная непустая строка.
-
-`description` - необязательная строка.
-
-`status` - одно из значений: `new`, `in_progress`, `done`.
+```text
+app/main.py            - точка входа FastAPI
+app/tasks/router.py    - HTTP-эндпоинты
+app/tasks/schemas.py   - Pydantic-схемы
+app/tasks/service.py   - бизнес-логика
+tests/test_tasks.py    - тесты API
+```
